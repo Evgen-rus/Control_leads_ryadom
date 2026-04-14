@@ -226,19 +226,12 @@ def main():
             logger.info("📱 ЭТАП 2: Пропущен (нет новых данных)")
             telegram_success = True  # Считаем успешным, так как нет данных для обработки
         
-        # Итоговая статистика
-        end_time = datetime.now()
-        duration = (end_time - start_time).total_seconds()
-        
-        logger.info("=" * 60)
-        logger.info("📊 ИТОГОВАЯ СТАТИСТИКА")
-        logger.info("=" * 60)
-        logger.info(f"Время выполнения: {duration:.2f} секунд")
+        # Итоговая статистика       
+                
         logger.info(f"Синхронизация: {'✅ Успешно' if sync_success else '❌ Ошибка'}")
         logger.info(f"Найдено новых лидов: {len(new_rows)}")
         logger.info(f"Telegram уведомления: {'✅ Успешно' if telegram_success else '❌ Ошибка'}")
-        
-        logger.info("=" * 60)
+                
         logger.info("🎉 ЦИКЛ СИНХРОНИЗАЦИИ И УВЕДОМЛЕНИЙ ЗАВЕРШЁН")
         
     except Exception as e:

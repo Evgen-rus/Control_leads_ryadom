@@ -253,4 +253,10 @@ Control_leads/
 - `8-20` — с 8 утра до 20:55 включительно
 - `1-5` — с понедельника по пятницу
 
-
+### Пример crontab для сервера:
+crontab -e
+```bash
+# ==== CONTROL_LEADS_RYADOM SCHEDULE ====
+CRON_TZ=Europe/Moscow
+*/5 7-20 * * 1-5 cd /opt/Control_leads_ryadom && /opt/Control_leads_ryadom/venv/bin/python /opt/Control_leads_ryadom/sync_and_notify.py >> /opt/Control_leads_ryadom/logs/cron.log 2>&1
+```
