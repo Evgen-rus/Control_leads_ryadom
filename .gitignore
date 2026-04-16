@@ -54,3 +54,6 @@ bot_stdout.log
 # Deployment
 deploy_telegram_bot/
 telegram_bot_deploy.tar.gz 
+
+# Database
+*.db
