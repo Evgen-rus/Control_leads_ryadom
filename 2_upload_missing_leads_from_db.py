@@ -1,3 +1,4 @@
+# Скрипт отправляет в Telegram только неотправленные лиды из SQLite.
 import logging
 from collections import defaultdict
 from logging.handlers import TimedRotatingFileHandler
@@ -248,6 +249,7 @@ def create_export_file(leads: List[sqlite3.Row]) -> str:
 def normalize_phone_for_export(phone: object) -> int:
     phone_text = str(phone).strip()
     normalized_phone = phone_text.lstrip("'").strip()
+    # Возвращаем число, чтобы Excel сохранял "Номера" как numeric-ячейку.
     return int(normalized_phone)
 
 

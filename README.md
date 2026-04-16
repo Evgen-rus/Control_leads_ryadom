@@ -259,4 +259,11 @@ crontab -e
 # ==== CONTROL_LEADS_RYADOM SCHEDULE ====
 CRON_TZ=Europe/Moscow
 */5 7-20 * * 1-5 cd /opt/Control_leads_ryadom && /opt/Control_leads_ryadom/venv/bin/python /opt/Control_leads_ryadom/sync_and_notify.py >> /opt/Control_leads_ryadom/logs/cron.log 2>&1
+34 8-17 * * * cd /opt/Control_leads_ryadom && /opt/Control_leads_ryadom/venv/bin/python /opt/Control_leads_ryadom/1_save_gsheet_to_sqlite.py >> /opt/Control_leads_ryadom/logs/to_sqlite_cron.log 2>&1
+36 8-17 * * * cd /opt/Control_leads_ryadom && /opt/Control_leads_ryadom/venv/bin/python /opt/Control_leads_ryadom/2_upload_missing_leads_from_db.py >> /opt/Control_leads_ryadom/logs/leads_from_db_cron.log 2>&1
 ```
+
+## Дополнительные утилиты
+
+- `1_save_gsheet_to_sqlite.py` — утилита для загрузки лидов из Google Sheets в локальную базу `lr186.db` (таблица `leads`) с фильтром по последним `DAYS_LOOKBACK` дням.
+- `2_upload_missing_leads_from_db.py` — утилита для выборки из `lr186.db` лидов без статуса отправки, выгрузки в `xlsx` (`Дата`, `Номера`), отправки файла в Telegram, обновления статуса `Статус отправки в скорозвон` в Google Sheets и проставления `skorozvon_info = "отправил"` в БД.

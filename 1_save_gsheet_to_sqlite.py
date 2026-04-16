@@ -1,3 +1,4 @@
+# Скрипт загружает лиды из Google Sheets в локальную SQLite-базу.
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import os
@@ -19,7 +20,7 @@ DAYS_LOOKBACK = 3
 # Имя файла базы данных в корне проекта
 DB_PATH = "lr186.db"
 
-# Диапазон скопируем весь лист
+# Доступ только на чтение Google Sheets
 GOOGLE_SHEETS_SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 # Время в таблице указано в МСК (UTC+3)
