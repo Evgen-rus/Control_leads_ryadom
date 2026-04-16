@@ -231,13 +231,24 @@ def create_export_file(leads: List[sqlite3.Row]) -> str:
 
     worksheet.append(["Дата", "Номера"])
     for lead in leads:
-        worksheet.append([str(lead["event_dt"]), str(lead["phone"])])
+        worksheet.append(
+            [str(lead["event_dt"]), normalize_phone_for_export(lead["phone"])]
+        )
+
+    for cell in worksheet["B"][1:]:
+        cell.number_format = "0"
 
     worksheet.column_dimensions["A"].width = 22
     worksheet.column_dimensions["B"].width = 18
 
     workbook.save(file_path)
     return file_path
+
+
+def normalize_phone_for_export(phone: object) -> int:
+    phone_text = str(phone).strip()
+    normalized_phone = phone_text.lstrip("'").strip()
+    return int(normalized_phone)
 
 
 def send_file_to_telegram(
@@ -247,7 +258,7 @@ def send_file_to_telegram(
     leads_count: int,
 ) -> None:
     url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
-    caption = f"Выгрузка лидов для скорозвона: {leads_count}"
+    caption = f"@limeunicorn Выгрузка данных для скорозвона: {leads_count}"
 
     with open(file_path, "rb") as document_file:
         response = requests.post(
@@ -352,6 +363,12 @@ def main() -> None:
         source_ids = [str(lead["source_id"]) for lead in leads]
         mark_leads_as_sent(conn, source_ids)
         logger.info("Статусы в БД обновлены: %s", len(source_ids))
+
+        os.remove(export_file_path)
+        logger.info(
+            "Файл выгрузки удален после успешной обработки: %s",
+            os.path.basename(export_file_path),
+        )
     finally:
         conn.close()
 
